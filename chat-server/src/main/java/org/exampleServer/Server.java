@@ -1,6 +1,8 @@
 package org.exampleServer;
 
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
     private final ServerSocket serverSocket;
@@ -11,6 +13,26 @@ public class Server {
     }
 
     public void runServer(){
+        try{
+            while (!serverSocket.isClosed()){
+                Socket socket=serverSocket.accept();
+                ClientManager clientManager=new ClientManager(socket);
+                System.out.println("Podkluchen noviy client!");
+                Thread thread=new Thread(clientManager);
+                thread.start();
+            }
+        }catch (IOException e){
+            closeSocked();
+        }
+    }
+
+    private void closeSocked() {
+
+        try{
+            if(serverSocket!=null) serverSocket.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
 
     }
 }
