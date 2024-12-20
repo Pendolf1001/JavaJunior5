@@ -10,7 +10,7 @@ public class ClientManager implements Runnable {
 
     private final Socket socket;
 
-//    private final static ArrayList<ClientManager> clients=new ArrayList<>();
+
     private final static HashMap<String, ClientManager> clients = new HashMap<>();
     private BufferedWriter bufferedWriter;
     private BufferedReader bufferedReader;
@@ -24,10 +24,13 @@ public class ClientManager implements Runnable {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             name=bufferedReader.readLine();
-//            clients.add(this);
+
             clients.put (name, this);
             System.out.println(name+" : podkluchilsya k chatu! ");
             broadcastMessage("Server: " +name + " podkluchilsya k chatu!");
+            broadcastMessage("Server: dla otpravki lichnogo soobsheniya ukazhite imya pered soobsheniem v formate: @[imya]! " );
+            broadcastMessage("Server: dla togo, chtoby uznat, kto v chate, naberite komandu CHAT! " );
+
         }catch (IOException e){
             closeEverything(socket, bufferedWriter, bufferedReader);
         }
@@ -91,32 +94,7 @@ public class ClientManager implements Runnable {
         }
 
 
-//        if(!clients.contains(adressatName)) {
-//            System.out.println("imya ne naydeno " + adressatName + " peresylau "+ name);
-//            clients.stream().forEach((x)->System.out.println(x.name));
-//            sendServerPrivateMessage(name, "Takogo imeni net v spiske!");
 //
-//        }
-//        else {
-//
-//
-//            for (ClientManager client : clients) {
-//
-//                if (client.name.equals(adressatName)) {
-//                    try {
-//
-//                        client.bufferedWriter.write(messageWithoutNames);
-//                        client.bufferedWriter.newLine();
-//                        client.bufferedWriter.flush();
-//
-//
-//                    } catch (IOException e) {
-//                        closeEverything(socket, bufferedWriter, bufferedReader);
-//                    }
-//                }
-//
-//            }
-//        }
 
     }
 
@@ -133,22 +111,7 @@ public class ClientManager implements Runnable {
             closeEverything(socket, bufferedWriter, bufferedReader);
         }
 
-//        for (ClientManager client : clients) {
-//
-//            if (client.name.equals(name)) {
-//                try {
-//
-//                    client.bufferedWriter.write("Server: " +message);
-//                    client.bufferedWriter.newLine();
-//                    client.bufferedWriter.flush();
-//
-//
-//                } catch (IOException e) {
-//                    closeEverything(socket, bufferedWriter, bufferedReader);
-//                }
-//            }
-//
-//        }
+
     }
 
     private String searchMessage(String messageFromClient) {
@@ -205,26 +168,6 @@ public class ClientManager implements Runnable {
         }catch (IOException e) {
             closeEverything(socket, bufferedWriter, bufferedReader);
         }
-//        for(ClientManager client: clients){
-//
-//                if (client.name.equals(name)) {
-//                    try {
-//                        client.bufferedWriter.write("Na danniy moment v chate:");
-//                        client.bufferedWriter.newLine();
-//                        client.bufferedWriter.flush();
-//                        for (ClientManager x : clients) {
-//
-//                                client.bufferedWriter.write(x.name);
-//                                client.bufferedWriter.newLine();
-//                                client.bufferedWriter.flush();
-//                        }
-//
-//                    } catch (IOException e) {
-//                            closeEverything(socket, bufferedWriter, bufferedReader);
-//                    }
-//                }
-//
-//        }
 
     }
 
@@ -267,17 +210,7 @@ public class ClientManager implements Runnable {
             closeEverything(socket, bufferedWriter, bufferedReader);
         }
 
-//        for(ClientManager client: clients){
-//            try {
-//                if (!client.name.equals(name)) {
-//                    client.bufferedWriter.write(message);
-//                    client.bufferedWriter.newLine();
-//                    client.bufferedWriter.flush();
-//                }
-//            }catch (IOException e){
-//                closeEverything(socket, bufferedWriter, bufferedReader);
-//            }
-//        }
+
     }
 
 }
