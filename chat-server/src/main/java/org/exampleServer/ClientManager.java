@@ -36,12 +36,42 @@ public class ClientManager implements Runnable {
         while(socket.isConnected()){
             try {
                 massegeFromClient = bufferedReader.readLine();
-                broadcastMessage(massegeFromClient);
+                System.out.println(massegeFromClient);
+                if (massegeFromClient.equals(name + ": "+"CHAT!")){
+                    whoIsChat();
+                }
+                else {
+                    broadcastMessage(massegeFromClient);
+                }
             }catch (IOException e){
                 closeEverything(socket, bufferedWriter, bufferedReader);
                 break;
             }
         }
+    }
+
+    private void whoIsChat() {
+        for(ClientManager client: clients){
+
+                if (client.name.equals(name)) {
+                    try {
+                        client.bufferedWriter.write("Na danniy moment v chate:");
+                        client.bufferedWriter.newLine();
+                        client.bufferedWriter.flush();
+                        for (ClientManager x : clients) {
+
+                                client.bufferedWriter.write(x.name);
+                                client.bufferedWriter.newLine();
+                                client.bufferedWriter.flush();
+                        }
+
+                    } catch (IOException e) {
+                            closeEverything(socket, bufferedWriter, bufferedReader);
+                    }
+                }
+
+        }
+
     }
 
     private void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader)  {
